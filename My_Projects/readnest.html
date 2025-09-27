@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Readnest — Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Readnest: offline-first solo reading with highlights/notes and online groups for shared comments, reactions, and presence." />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .muted{color:#666;font-size:.95rem}
+    .img{border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);width:100%;height:auto}
+    .table{width:100%;border-collapse:collapse;margin:.5rem 0 1rem}
+    .table th,.table td{border:1px solid var(--line);padding:.6rem;text-align:left;font-size:.95rem}
+    .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0 1.5rem}
+    .kpi .card{text-align:center;padding:1rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a class="btn ghost" href="/">← Back to portfolio</a></p>
+
+    <h1>Readnest — Solo Reading (Offline) + Social Groups (Online)</h1>
+    <p class="small">Role: UX & Front-End · Growing Back-End • Stack: HTML, CSS, JS · Supabase (Auth, Postgres, Realtime, Storage) · PWA</p>
+
+    <figure style="margin-top:1rem">
+      <img class="img" src="../images/readnest-hero.png" alt="Readnest sketch: reader + notes and groups" />
+      <figcaption class="muted">Two modes: Solo (offline personal library) and Connect (groups, shared comments).</figcaption>
+    </figure>
+
+    <h2>Problem</h2>
+    <p>
+      Ebooks are convenient, but reading apps are often barebones or bloated with features. Social reading
+      (book clubs, recommendations) usually happens outside the app, making it hard to share thoughts while
+      reading. I wanted a better way to read digitally, annotate, and discuss books with friends.
+      Something where we could react <em>as we read</em>, not just meet after as different schedules and paces made it hard.
+      Inspired by Wattpad/Webnovel,Readnest lets us read on our own time, leave inline comments, and see each
+      other’s opinions on what we just read—plus a solo offline mode for annotating ebooks anywhere.
+    </p>
+
+    <h2>Core Features</h2>
+    <h3>Offline Mode (Personal Library)</h3>
+    <ul>
+      <li>Upload EPUB/PDF locally on phone or laptop (no account required for Solo).</li>
+      <li>Highlight passages and add comments/notes.</li>
+      <li>Progress and notes saved <strong>offline</strong> (IndexedDB).</li>
+      <li>Export annotated books as <code>.epubx</code> (EPUB + notes + voice-note refs).</li>
+      <li>Import <code>.epubx</code> later to restore notes or share with friends.</li>
+    </ul>
+
+    <h3>Online Mode (Social Groups)</h3>
+    <ul>
+      <li>Create/join via invite code.</li>
+      <li><strong>Two group types:</strong>
+        <ul>
+          <li><strong>Book Club:</strong> one shared book at a time with inline shared comments and archive.</li>
+          <li><strong>Recommendation Group:</strong> members upload books; each book gets its own chat/comments.</li>
+        </ul>
+      </li>
+      <li>Realtime:
+        <ul>
+          <li>Inline shared comments tied to text selections.</li>
+          <li>Group chat (global + per-book), presence (“who’s online”).</li>
+          <li>Emoji reactions; voice notes (planned).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="kpi">
+      <div class="card"><h3>Offline-first</h3><p class="muted">Works without signup</p></div>
+      <div class="card"><h3>Inline</h3><p class="muted">Comments on exact text</p></div>
+      <div class="card"><h3>Import/Export</h3><p class="muted">Portable <code>.epubx</code></p></div>
+    </div>
+
+    <h2>UX Highlights</h2>
+    <ul>
+      <li><strong>Leave comments & reactions per paragraph;</strong> show them only when others reach that spot (spoiler-safe).</li>
+      <li><strong>Create a small club via invite code;</strong> track each member’s progress.</li>
+      <li><strong>Solo mode:</strong> annotate offline and sync when online.</li>
+      <li><strong>Keep the UI calm and focused on reading</strong> (minimal chrome, readable type, gentle colors).</li>
+      <li><strong>Two-pane reader:</strong> left = text with highlights; right = notes/comments.</li>
+      <li><strong>Inline anchors:</strong> selecting text reveals “Add note / react” toolbar.</li>
+      <li><strong>Solo → Connect:</strong> read offline first, then sync/export to a group when online.</li>
+      <li><strong>Gentle nudges:</strong> progress rings + “continue where you left off”.</li>
+    </ul>
+
+    <h2>Architecture</h2>
+    <table class="table">
+      <thead><tr><th>Layer</th><th>Tech</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Reader</td><td>HTML/CSS/JS</td><td><em>epub.js</em> for EPUB, <em>PDF.js</em> for PDF (client render)</td></tr>
+        <tr><td>Offline storage</td><td>IndexedDB</td><td><em>idb-keyval/localForage</em> for notes, progress, local files</td></tr>
+        <tr><td>Sync / Online</td><td>Supabase</td><td>Auth, Postgres, Realtime (comments/reactions), Storage (covers, optional files)</td></tr>
+        <tr><td>Packaging</td><td>Zip + JSON</td><td><code>.epubx</code>: original EPUB + <code>notes.json</code> (+ <code>voices/</code> later)</td></tr>
+        <tr><td>Hosting</td><td>Netlify + PWA</td><td>Service worker for offline app shell</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Data Model (simplified)</h3>
+    <table class="table">
+      <thead><tr><th>Table</th><th>Main fields</th></tr></thead>
+      <tbody>
+        <tr><td><code>users</code></td><td>auth users</td></tr>
+        <tr><td><code>books</code></td><td>id, owner_id, title, author, cover_url, is_public</td></tr>
+        <tr><td><code>book_files</code></td><td>book_id, storage_path, type (epub|pdf)</td></tr>
+        <tr><td><code>highlights</code></td><td>id, book_id, user_id, start_offset, end_offset, color</td></tr>
+        <tr><td><code>notes</code></td><td>id, book_id, user_id, highlight_id, body, created_at</td></tr>
+        <tr><td><code>groups</code></td><td>id, owner_id, type (club|reco), name, invite_code</td></tr>
+        <tr><td><code>group_members</code></td><td>group_id, user_id, role</td></tr>
+        <tr><td><code>group_books</code></td><td>group_id, book_id, added_by, status (active|archived)</td></tr>
+        <tr><td><code>inline_comments</code></td><td>id, group_id, book_id, user_id, anchor_range, text</td></tr>
+        <tr><td><code>reactions</code></td><td>comment_id, user_id, emoji</td></tr>
+        <tr><td><code>presence</code></td><td>realtime channel only (no table)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Security & Privacy</h2>
+    <ul>
+      <li>Row Level Security for all user-generated tables; comments limited to group members.</li>
+      <li>Local-only Solo mode: nothing leaves device until the user imports/syncs.</li>
+      <li>Copyright: users should only upload DRM-free ebooks or personal notes.</li>
+    </ul>
+
+    <h2>Roadmap</h2>
+    <ol>
+      <li><strong>MVP — Solo (offline-first):</strong> load EPUB/PDF, highlights/notes in IndexedDB, progress resume, export/import <code>.epubx</code>.</li>
+      <li><strong>v2 — Connect (online groups):</strong> Auth, create/join group, shared inline comments on the same book, presence, reactions.</li>
+      <li><strong>v3 — Extras:</strong> voice notes, recommendation groups with per-book chat, richer exports, EPUB/PDF parsing improvements.</li>
+    </ol>
+
+    <h2>Key Screens</h2>
+    <div class="grid three">
+      <figure><img class="img" src="../images/readnest-solo.png" alt="Solo reader"><figcaption class="muted">Solo mode: reader + notes</figcaption></figure>
+      <figure><img class="img" src="../images/readnest-inline.png" alt="Inline comments"><figcaption class="muted">Inline shared comments</figcaption></figure>
+      <figure><img class="img" src="../images/readnest-groups.png" alt="Groups view"><figcaption class="muted">Groups (Book Club / Recommendations)</figcaption></figure>
+    </div>
+
+    <h2>Future Improvements</h2>
+    <ul>
+      <li>Voice notes attached to selections (stored in Storage, transcribed for search).</li>
+      <li>“Read-together” live text mode (soft sync to paragraph anchors).</li>
+      <li>Better EPUB/PDF parsing for complex layouts and images.</li>
+      <li>Mobile gestures (long-press highlight, swipe between comments).</li>
+    </ul>
+
+    <h2>Links</h2>
+    <p>
+      <a class="btn" href="https://YOUR-READNEST-DEMO.netlify.app" target="_blank" rel="noopener">Live Demo</a>
+      <a class="btn ghost" href="https://github.com/YOUR-USERNAME/readnest" target="_blank" rel="noopener">GitHub Repo</a>
+      <a class="btn ghost" href="../CV/Antonella-CV.pdf" download>Download CV</a>
+    </p>
+
+    <p class="muted">Built by Antonella Akromah · <a href="mailto:a@gmail.com">a@gmail.com</a></p>
+  </div>
+</body>
+</html>
+<!doctype html>

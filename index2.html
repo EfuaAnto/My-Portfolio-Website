@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Antonella Akromah — Web Developer (UX & Front-End)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Antonella Akromah — Web Developer focused on UX & Front-End. Portfolio, projects, services, and contact." />
+  <link rel="stylesheet" href="styles2.css" />
+</head>
+<body>
+  <!-- Top Nav -->
+  <header class="nav" aria-label="Primary">
+    <a class="brand" href="/">Antonella</a>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <!-- Prefer PDF for recruiters -->
+      <a class="btn" href="CV/Antonella-CV.pdf" download>Download CV</a>
+    </nav>
+  </header>
+
+  <!-- HERO with image + subtle animation -->
+  <section class="hero">
+    <div class="hero-grid">
+        <div class="hero-img">
+        <img src="images/portfolio_immage.jpg" alt="Portrait of Antonella Akromah" loading="eager" decoding="async">
+      </div>
+      <div class="hero-text">
+        <h1>Full Stack Web Developer</h1>
+        <p class="lead">
+         Hi, I’m Antonella Akromah, a Computing graduate based in London. 
+I’m an aspiring Web and Software Developer, passionate about designing and building web-applications that are user-friendly, accessible, and efficient.
+        </p>
+        <div class="cta">
+          <a class="btn" href="#projects">View Projects</a>
+          <a class="btn ghost" href="#contact">Contact</a>
+          <a class="btn ghost" href="CV/Antonella-CV.pdf" download aria-label="Download my CV as PDF">Download CV</a>
+        </div>
+
+        <!-- Quick social/contact links -->
+      
+ 
+<ul class="inline-links" aria-label="Social links">
+          <li><a href="mailto:akromahantonella@gmail.com">Email</a></li>
+          <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://github.com/" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+
+       
+    </div>
+   
+  </section>
+
+  <!-- SERVICES (for freelance) -->
+  <section id="services" class="wrap">
+    <h2>Services</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Web Design & Build</h3>
+        <p>From wireframes to a live, responsive website. HTML, CSS, JavaScript on Netlify.</p>
+      </div>
+      <div class="card">
+        <h3>UX Design</h3>
+        <p>Wireframes, user flows, and hi-fi mockups. Accessibility-minded and research-led.</p>
+      </div>
+      <div class="card">
+        <h3>Site Redesign</h3>
+        <p>Refresh visuals and structure for clarity, speed, and conversion.</p>
+      </div>
+      <div class="card">
+        <h3>Maintenance</h3>
+        <p>Content updates, small fixes, and ongoing improvements.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="wrap">
+    <h2>Projects</h2>
+    <div class="grid">
+      <a class="card" href="My_Projects/readnest.html">
+        <h3>Readnest</h3>
+        <p>Reader with highlights/notes + simple clubs (case study).</p>
+      </a>
+      <a class="card" href="My_Projects/adhd-todo.html">
+        <h3>ADHD To-Do</h3>
+        <p>Focused tasks with color tags and priorities.</p>
+      </a>
+      <a class="card" href="My_Projects/YoutubeScheduler.html">
+        <h3>YouTube Planner (UX)</h3>
+        <p>Multi-channel dashboard concept (UX case study).</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- SKILLS (grouped) + EDUCATION -->
+  <section id="skills" class="wrap">
+    <h2>Skills</h2>
+    <div class="grid two">
+      <div>
+        <h3>Front-End</h3>
+        <ul class="tags">
+          <li>HTML</li><li>CSS</li><li>JavaScript</li><li>Responsive Design</li><li>Accessibility</li>
+        </ul>
+        <h3>Back-End </h3>
+        <ul class="tags">
+          <li>Supabase (Postgres, Auth)</li><li>PHP (basics)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>UX & Tools</h3>
+        <ul class="tags">
+          <li>Figma (wireframes, flows)</li><li>Prototyping</li><li>Usability</li><li>Git/GitHub</li><li>Netlify</li>
+        </ul>
+        <h3>Education</h3>
+        <p><strong>BSc Computing (First-Class)</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="wrap">
+    <h2>About</h2>
+    <p>
+      I’m Antonella — I love turning ideas into clear user journeys and reliable web experiences.
+      My strengths are UX and front-end; I’m actively growing my back-end skills to deliver
+      simple full-stack solutions when needed.
+    </p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap">
+    <h2>Contact</h2>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="form">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+      <label>Name <input name="name" required></label>
+      <label>Email <input type="email" name="email" required></label>
+      <label>Message <textarea name="message" required></textarea></label>
+      <button class="btn" type="submit">Send</button>
+    </form>
+    <p class="small" style="margin-top:.75rem;">
+      Prefer email? <a href="mailto:youremail@example.com">youremail@example.com</a>
+    </p>
+  </section>
+
+  <footer class="wrap small">© <span id="y"></span> Antonella Akromah — Web Developer</footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

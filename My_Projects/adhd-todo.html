@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ADHD Routine Timer — Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Case study for an ADHD-friendly routine timer web app built by Antonella Akromah. Front-end: HTML/CSS/JS. Back-end: Supabase (Postgres + Auth)." />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .table { width:100%; border-collapse: collapse; margin:.5rem 0 1rem }
+    .table th, .table td { border:1px solid var(--line); padding:.6rem; text-align:left; font-size:.95rem }
+    .kpi { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin:1rem 0 1.5rem }
+    .kpi .card { text-align:center; padding:1rem }
+    .muted { color:#666; font-size:.95rem }
+    .img { border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); width:100%; height:auto }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a class="btn ghost" href="../index2.html">← Back to portfolio</a></p>
+
+    <h1>ADHD Routine Timer — Timed Routines with Presets & Focus</h1>
+    <p class="small">Role: UX & Front-End · Growing Back-End • Stack: HTML, CSS, JavaScript, Supabase (Auth + Postgres)</p>
+
+    <figure style="margin-top:1rem">
+      <img class="img" src="../images/todo-hero.png" alt="Screenshot of the ADHD Routine Timer app" />
+      <figcaption class="muted">MVP UI — timed tasks, preset routines, low-distraction layout.</figcaption>
+    </figure>
+
+    <h2>Context</h2>
+    <p>
+      Traditional to-do apps often overwhelm attention with endless lists and complex features. 
+      My idea came from <em>body doubling</em>—the productivity technique of working alongside someone else for motivation. 
+      I designed this app as a simple <strong>routine timer</strong> where users can create or choose timed task sets 
+      and run them distraction-free, with an optional focus video in future versions.
+    </p>
+
+    <h2>Goals</h2>
+    <ul>
+      <li>⏱ Run a routine of tasks, each with its own timer and auto-advance.</li>
+      <li>📚 Presets for quick start (e.g., Pomodoro 25/5, Cleaning 15).</li>
+      <li>🎲 Randomize tasks from a personal library to build new routines.</li>
+      <li>🔒 Personal data: private routines per user (Supabase Auth + RLS).</li>
+      <li>📊 Session summary: show completed tasks and total focus time.</li>
+    </ul>
+
+    <div class="kpi">
+      <div class="card"><h3>3</h3><p class="muted">Preset routines</p></div>
+      <div class="card"><h3>∞</h3><p class="muted">Custom routines</p></div>
+      <div class="card"><h3>100%</h3><p class="muted">RLS-protected data</p></div>
+    </div>
+
+    <h2>Users & UX Decisions</h2>
+    <ul>
+      <li><strong>Large timer display:</strong> high-contrast countdown for each task.</li>
+      <li><strong>Presets:</strong> quick start without setup, useful for motivation dips.</li>
+      <li><strong>Color cues:</strong> optional priority colors, but kept UI clean.</li>
+      <li><strong>Full-screen run mode:</strong> fewer distractions while a routine is active.</li>
+      <li><strong>Keyboard shortcuts:</strong> space = pause/resume, → = skip task.</li>
+    </ul>
+
+    <h2>Architecture (MVP)</h2>
+    <p>
+      The app runs as a static site on Netlify. It uses Supabase for authentication, data storage, 
+      and policies to isolate user data. Routines, tasks, and session history are stored in Postgres tables.
+    </p>
+
+    <table class="table">
+      <thead><tr><th>Layer</th><th>Tech</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Front-end</td><td>HTML/CSS/JS</td><td>Routine timer, filters, and run mode</td></tr>
+        <tr><td>Auth</td><td>Supabase Auth</td><td>Email/password (MVP)</td></tr>
+        <tr><td>DB</td><td>Supabase Postgres</td><td>Tasks, routines, sessions tables</td></tr>
+        <tr><td>Hosting</td><td>Netlify</td><td>Free tier, auto-deploy from GitHub</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Database Schema (simplified)</h3>
+    <table class="table">
+      <thead><tr><th>Table</th><th>Main fields</th></tr></thead>
+      <tbody>
+        <tr><td><code>tasks</code></td><td>id, user_id, title, default_minutes, category</td></tr>
+        <tr><td><code>routines</code></td><td>id, user_id, name, is_preset</td></tr>
+        <tr><td><code>routine_items</code></td><td>routine_id, title, minutes, position</td></tr>
+        <tr><td><code>sessions</code></td><td>id, user_id, routine_id, started_at, ended_at, video_url (future)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Create custom routines with ordered tasks and durations.</li>
+      <li>Start a timer that runs through tasks automatically.</li>
+      <li>Pause, resume, or skip tasks; sound alert on task switch.</li>
+      <li>Pick from built-in presets like “Focus 25” or “Clean 15”.</li>
+      <li>Randomize routines from a personal task library.</li>
+    </ul>
+
+    <h2>Challenges & Fixes</h2>
+    <ul>
+      <li><strong>Managing timers:</strong> kept logic simple with one interval and state management for pause/resume.</li>
+      <li><strong>Data privacy:</strong> used Supabase Row Level Security so only owners can view/edit their routines.</li>
+      <li><strong>Over-scoping risk:</strong> body-doubling video was part of the vision, but postponed to future improvements.</li>
+    </ul>
+
+    <h2>Result</h2>
+    <p>
+      The MVP provides a distraction-free way to run timed routines, either through presets or custom task sets.
+      It demonstrates full-stack skills: authentication, CRUD routines, and a real-time timer with session tracking.
+    </p>
+
+    <h2>Screens</h2>
+    <div class="grid three">
+      <figure><img class="img" src="../images/todo-list.png" alt="Routine list"><figcaption class="muted">Routine library</figcaption></figure>
+      <figure><img class="img" src="../images/todo-timer.png" alt="Routine run screen"><figcaption class="muted">Running a routine</figcaption></figure>
+      <figure><img class="img" src="../images/todo-presets.png" alt="Preset routines"><figcaption class="muted">Preset quick start</figcaption></figure>
+    </div>
+
+    <h2>Future Improvements</h2>
+    <ul>
+      <li><strong>Body-doubling video:</strong> allow users to run a routine alongside a video (e.g., “focus with me” or their own upload). 
+          I scoped this out of the MVP to stay realistic, but it remains a major future goal.</li>
+      <li>More presets, including study, cleaning, and morning routines.</li>
+      <li>Offline support and PWA install (so it works like a mobile app).</li>
+      <li>Daily streaks, achievements, and personal analytics.</li>
+    </ul>
+
+    <h2>Links</h2>
+    <p>
+      <a class="btn" href="https://YOUR-LIVE-DEMO.netlify.app" target="_blank" rel="noopener">Live Demo</a>
+      <a class="btn ghost" href="https://github.com/YOUR-USERNAME/adhd-routine-timer" target="_blank" rel="noopener">GitHub Repo</a>
+      <a class="btn ghost" href="../CV/Antonella-CV.pdf" download>Download CV</a>
+    </p>
+
+    <p class="muted">Built by Antonella Akromah · <a href="mailto:a@gmail.com">a@gmail.com</a></p>
+  </div>
+</body>
+</html>

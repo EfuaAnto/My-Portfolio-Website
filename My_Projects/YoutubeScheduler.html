@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>YouTube Planner — Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Case study for a YouTube content planning web app by Antonella Akromah. Manage video ideas, statuses, and schedules across multiple channels." />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .muted{color:#666;font-size:.95rem}
+    .img{border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);width:100%;height:auto}
+    .table{width:100%;border-collapse:collapse;margin:.5rem 0 1rem}
+    .table th,.table td{border:1px solid var(--line);padding:.6rem;text-align:left;font-size:.95rem}
+    .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0 1.5rem}
+    .kpi .card{text-align:center;padding:1rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a class="btn ghost" href="/">← Back to portfolio</a></p>
+
+    <h1>YouTube Planner — Ideas, Status & Schedule</h1>
+    <p class="small">Role: UX & Front-End · Growing Back-End • Stack: HTML, CSS, JavaScript, Supabase (Auth + Postgres)</p>
+
+    <figure style="margin-top:1rem">
+      <img class="img" src="../images/yt-hero.png" alt="YouTube planner dashboard" />
+      <figcaption class="muted">MVP board view with statuses from Idea → Published.</figcaption>
+    </figure>
+
+    <h2>Problem</h2>
+    <p>
+      Managing YouTube across multiple channels is chaotic: ideas scattered in notes, no clear status tracking, and publish dates forgotten.
+      I designed this planner to centralise ideas, track progress visually, and give creators a calm overview of what’s due next.
+    </p>
+
+    <h2>Goals</h2>
+    <ul>
+      <li>🎬 Capture video ideas quickly with title, description, and channel.</li>
+      <li>📊 Track status from <em>Idea → Draft → Filming → Editing → Scheduled → Published</em>.</li>
+      <li>📅 See upcoming videos by due date (Today, This Week, Later).</li>
+      <li>🔒 Keep data private with authentication and row-level security.</li>
+      <li>📱 Responsive design: usable on desktop and mobile.</li>
+    </ul>
+
+    <div class="kpi">
+      <div class="card"><h3>6</h3><p class="muted">Statuses tracked</p></div>
+      <div class="card"><h3>∞</h3><p class="muted">Ideas per channel</p></div>
+      <div class="card"><h3>100%</h3><p class="muted">User data isolation</p></div>
+    </div>
+
+    <h2>UX Highlights</h2>
+    <ul>
+      <li><strong>Board view:</strong> Kanban columns for each status.</li>
+      <li><strong>Schedule view:</strong> grouped list of Today / This Week / Later.</li>
+      <li><strong>Quick capture:</strong> inline form at the top; one field + dropdowns.</li>
+      <li><strong>Channel filter:</strong> see all ideas or just one channel.</li>
+      <li><strong>Accessible actions:</strong> each card has simple Edit / Delete / Advance buttons.</li>
+    </ul>
+
+    <h2>Architecture (MVP)</h2>
+    <p>
+      The MVP runs as a static app on Netlify, with Supabase handling authentication, storage, and row-level security.
+      Each idea belongs to a user and an optional channel.
+    </p>
+
+    <table class="table">
+      <thead><tr><th>Layer</th><th>Tech</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Front-end</td><td>HTML, CSS, JavaScript</td><td>Board & schedule UI</td></tr>
+        <tr><td>Auth</td><td>Supabase Auth</td><td>Email/password (MVP)</td></tr>
+        <tr><td>DB</td><td>Supabase Postgres</td><td>Tables: <code>channels</code>, <code>ideas</code></td></tr>
+        <tr><td>Hosting</td><td>Netlify</td><td>Deploy from GitHub</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Database Schema (simplified)</h3>
+    <table class="table">
+      <thead><tr><th>Table</th><th>Main fields</th></tr></thead>
+      <tbody>
+        <tr><td><code>channels</code></td><td>id, user_id, name, platform</td></tr>
+        <tr><td><code>ideas</code></td><td>id, user_id, channel_id, title, description, status, due_date</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Challenges & Fixes</h2>
+    <ul>
+      <li><strong>Scope creep:</strong> kept MVP to ideas + statuses + due dates. Drag-and-drop & calendar grid saved for later.</li>
+      <li><strong>Data privacy:</strong> Row Level Security ensures only the owner can access their channels/ideas.</li>
+      <li><strong>Mobile layout:</strong> reduced 6-column board to 2-column grid on smaller screens.</li>
+    </ul>
+
+    <h2>Result</h2>
+    <p>
+      The MVP delivers a working planner: creators can log in, add ideas, track them across statuses, and check upcoming deadlines.
+      It demonstrates full-stack skills: authentication, CRUD, filters, and responsive UI.
+    </p>
+
+    <h2>Screens</h2>
+    <div class="grid three">
+      <figure><img class="img" src="../images/yt-board.png" alt="Board view"><figcaption class="muted">Board view (statuses)</figcaption></figure>
+      <figure><img class="img" src="../images/yt-schedule.png" alt="Schedule view"><figcaption class="muted">Schedule view</figcaption></figure>
+      <figure><img class="img" src="../images/yt-form.png" alt="Add idea form"><figcaption class="muted">Quick capture form</figcaption></figure>
+    </div>
+
+    <h2>Future Improvements</h2>
+    <ul>
+      <li>Drag-and-drop between columns with auto-save.</li>
+      <li>Calendar grid with weekly/monthly views.</li>
+      <li>Templates for recurring video types (e.g., Reviews, Tutorials).</li>
+      <li>Supabase Storage: attach thumbnails or briefs.</li>
+      <li>Collaboration: invite an editor with restricted access.</li>
+      <li>YouTube API integration to auto-detect published status.</li>
+    </ul>
+
+    <h2>Links</h2>
+    <p>
+      <a class="btn" href="https://YOUR-YT-PLANNER-DEMO.netlify.app" target="_blank" rel="noopener">Live Demo</a>
+      <a class="btn ghost" href="https://github.com/YOUR-USERNAME/youtube-planner" target="_blank" rel="noopener">GitHub Repo</a>
+      <a class="btn ghost" href="../CV/Antonella-CV.pdf" download>Download CV</a>
+    </p>
+
+    <p class="muted">Built by Antonella Akromah · <a href="mailto:a@gmail.com">a@gmail.com</a></p>
+  </div>
+</body>
+</html>
